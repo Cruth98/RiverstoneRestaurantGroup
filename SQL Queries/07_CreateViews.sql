@@ -38,3 +38,35 @@ JOIN dbo.menu_items mi
 JOIN dbo.menu_categories mc
     ON mi.menu_category_id = mc.menu_category_id;
 GO
+
+/* ============================================
+Daily Restaurant Revenue
+============================================ */
+
+CREATE VIEW vw_daily_restaurant_sales AS
+SELECT
+    CAST(o.order_datetime AS DATE) AS order_date,
+    o.restaurant_id,
+    r.restaurant_name,
+    r.city,
+    r.state,
+    r.region,
+    c.concept_name,
+    COUNT(DISTINCT o.order_id) AS orders,
+    SUM(o.subtotal) AS subtotal_revenue,
+    SUM(o.tax_amount) AS tax,
+    SUM(o.discount_amount) AS discounts,
+    SUM(o.total_amount) AS total_revenue
+FROM dbo.orders o
+JOIN dbo.restaurants r
+    ON o.restaurant_id = r.restaurant_id
+JOIN dbo.concepts c
+    ON o.concept_id = c.concept_id
+GROUP BY
+    CAST(o.order_datetime AS DATE),
+    o.restaurant_id,
+    r.restaurant_name,
+    r.city,
+    r.state,
+    r.region,
+    c.concept_name;

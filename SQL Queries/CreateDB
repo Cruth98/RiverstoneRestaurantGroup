@@ -1,0 +1,6 @@
+/* 
+Create the Riverstone Restaurant Group Database as RRG_Database
+*/
+
+CREATE DATABASE RRG_Database;
+GO

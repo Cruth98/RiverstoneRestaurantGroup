@@ -1,0 +1,29 @@
+/*
+Revenue Analysis
+*/
+
+-- Revenue by restaurant
+SELECT
+    restaurant_name,
+    SUM(extended_price) AS restaurant_revenue
+FROM vw_order_line_sales
+GROUP BY restaurant_name
+ORDER BY restaurant_revenue DESC;
+
+
+-- Revenue by concept
+SELECT
+    concept_name,
+    SUM(extended_price) AS concept_revenue
+FROM vw_order_line_sales
+GROUP BY concept_name
+ORDER BY concept_revenue DESC;
+
+
+-- Revenue by state
+SELECT
+    state,
+    SUM(extended_price) AS state_revenue
+FROM vw_order_line_sales
+GROUP BY state
+ORDER BY state_revenue DESC;

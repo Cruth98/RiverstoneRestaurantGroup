@@ -70,3 +70,36 @@ GROUP BY
     r.state,
     r.region,
     c.concept_name;
+
+/* ============================================
+Hourly Order Volume
+============================================ */
+
+CREATE VIEW vw_hourly_order_volume AS
+SELECT
+    CAST(o.order_datetime AS DATE) AS order_date,
+    DATEPART(HOUR, o.order_datetime) AS order_hour,
+    o.restaurant_id,
+    r.restaurant_name,
+    r.city,
+    r.state,
+    r.region,
+    c.concept_name,
+    COUNT(DISTINCT o.order_id) AS order_count,
+    SUM(o.total_amount) AS revenue
+FROM dbo.orders o
+JOIN dbo.restaurants r
+    ON o.restaurant_id = r.restaurant_id
+JOIN dbo.concepts c
+    ON o.concept_id = c.concept_id
+GROUP BY
+    CAST(o.order_datetime AS DATE),
+    DATEPART(HOUR, o.order_datetime),
+    o.restaurant_id,
+    r.restaurant_name,
+    r.city,
+    r.state,
+    r.region,
+    c.concept_name;
+GO
+
